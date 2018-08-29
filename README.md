@@ -1,17 +1,17 @@
 Use Gists 1.0.0
 =============
 
-Use your Github gists right inside your IDE!
+Use your Github gists right inside your Intellij IDE!
 
-Copy and paste your gists to the code you are working on.
+Copy and paste your gists to the project code you are working on.
 
-This project was inspired on the famous plugin [getGists][get-gists]
+This project was inspired on the plugin [getGists][get-gists]
 
 
 Installation
 ------------
 
-- Using IDE built-in plugin system:
+- Using Intellij IDE built-in plugin system:
   - <kbd>File</kbd> > <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Browse repositories...</kbd> > <kbd>Search for "Use Gists"</kbd> > <kbd>Install Plugin</kbd>
 - Manually:
   - Download the [latest release][latest-release] and install it manually using <kbd>File</kbd> > <kbd>Settings</kbd> > <kbd>Plugins</kbd> > <kbd>Install plugin from disk...</kbd>
