@@ -5,6 +5,8 @@ Use your Github gists right inside your Intellij IDE!
 
 Copy and paste your gists to the project code you are working on.
 
+Intellij plugins site: https://plugins.jetbrains.com/plugin/11080-use-gists
+
 This project was inspired on the plugin [getGists][get-gists]
 
 
