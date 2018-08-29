@@ -1,0 +1,56 @@
+<idea-plugin>
+    <id>br.com.fabioluis.usegists</id>
+    <name>Use Gists</name>
+    <version>1.0.0</version>
+    <vendor url="https://github.com/silvafabio/use-gists">Fabio Silva</vendor>
+
+    <description><![CDATA[
+        <h1><b>Use Gists</b></h1>
+        <br/>
+        <a href="https://github.com/silvafabio/use-gists" target="_blank">GitHub</a> |
+        <a href="https://github.com/silvafabio/use-gists/issues" target="_blank">Issues</a> |
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=W8NQQ9AFX8NSC&lc=US&item_name=Fabio%20Silva&item_number=Use%20Gists&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted" target="_blank">Donate with PayPal</a>
+        <br/>
+        <br/>
+        <br/>
+        <em>Use your Github gists right inside your IDE!</em><br/><br/>
+        <em>Copy and paste your gists to the project code you are working on.</em><br/><br/>
+        <em>This project was inspired on the plugin <a href="https://github.com/johna1203/getGists" target="_blank">getGists<a/>.</em>
+    ]]></description>
+
+    <change-notes><![CDATA[
+      <a href="https://github.com/silvafabio/use-gists/tree/v1.0.0"><b>v1.0.0</b></a> (2018-08-28)
+      <br/>
+      <br/>
+      <em>First release.</em>
+      <br>
+      <br>
+      <a href="https://github.com/silvafabio/use-gists/blob/master/CHANGELOG.md"><b>Full Changelog History</b></a>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="182"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <depends>com.intellij.modules.lang</depends>
+    <depends>org.jetbrains.plugins.github</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Use Gists" anchor="bottom" icon="GithubIcons.Github_icon"
+                    factoryClass="br.com.fabioluis.usegists.ui.UseGistsToolWindowFactory"/>
+        <applicationService serviceImplementation="br.com.fabioluis.usegists.service.ListGists"/>
+        <applicationService serviceImplementation="br.com.fabioluis.usegists.service.GetGist"/>
+    </extensions>
+
+    <application-components>
+        <component>
+            <implementation-class>br.com.fabioluis.usegists.component.UseGists</implementation-class>
+        </component>
+    </application-components>
+</idea-plugin>
