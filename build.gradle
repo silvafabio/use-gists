@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'br.com.fabioluis'
-version '1.0.0'
+version '1.1.0'
 
 sourceCompatibility = 1.8
 
@@ -20,7 +20,7 @@ dependencies {
 }
 
 intellij {
-    version '182.4129.33'
+    version '2018.2'
     plugins 'github'
     pluginName 'Use Gists'
 }

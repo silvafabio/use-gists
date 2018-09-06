@@ -1,5 +1,5 @@
-Use Gists 1.0.0
-=============
+Use Gists 1.1.0
+===============
 
 Use your Github gists right inside your Intellij IDE!
 
@@ -30,9 +30,9 @@ Usage
 Changelog
 ---------
 
-### [v1.0.0](https://github.com/silvafabio/use-gists/tree/v1.0.0) (2018-08-28)
+### [v1.1.0](https://github.com/silvafabio/use-gists/tree/v1.1.0) (2018-09-05)
 
-- First release
+- Syntax highlighting based on file extension
 
 
 [Full Changelog History](./CHANGELOG.md)
