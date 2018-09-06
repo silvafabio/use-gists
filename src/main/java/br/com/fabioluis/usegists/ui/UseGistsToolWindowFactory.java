@@ -31,7 +31,7 @@ public class UseGistsToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(new UseGistsSimpleToolWindowPanel(), "", false);
+        Content content = contentFactory.createContent(new UseGistsSimpleToolWindowPanel(project), "", false);
         toolWindow.getContentManager().addContent(content);
     }
 

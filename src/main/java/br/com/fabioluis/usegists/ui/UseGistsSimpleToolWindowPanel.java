@@ -30,6 +30,9 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.EditorSettings;
+import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.JBSplitter;
 import com.intellij.ui.TreeSpeedSearch;
@@ -56,34 +59,39 @@ class UseGistsSimpleToolWindowPanel extends SimpleToolWindowPanel {
     private SimpleTree tree;
     private Editor editor;
     private UseGists useGists;
+    private Project project;
+    private JBSplitter splitPane;
 
-    public UseGistsSimpleToolWindowPanel() {
+    public UseGistsSimpleToolWindowPanel(Project project) {
         super(false, true);
 
+        this.project = project;
         useGists = ApplicationManager.getApplication().getComponent(UseGists.class);
         createView();
         updateTree();
     }
 
     private void createView() {
-        createEditor();
+        splitPane = new JBSplitter(JBSPLITER_PROPORTION_KEY, JBSPLITER_DEFAULT_PROPORTION);
+
+        createEditor("empty.txt");
         createTree();
         createToolbar();
 
-        JBSplitter splitPane = new JBSplitter(JBSPLITER_PROPORTION_KEY, JBSPLITER_DEFAULT_PROPORTION);
         JBScrollPane jbScrollPane = new JBScrollPane(tree);
         splitPane.setFirstComponent(jbScrollPane);
-        splitPane.setSecondComponent(editor.getComponent());
 
         add(splitPane);
     }
 
-    private void createEditor() {
+    private void createEditor(String filename) {
         EditorFactory instance = EditorFactory.getInstance();
         Document document = instance.createDocument("");
 
+        FileType fileType = FileTypeManager.getInstance().getFileTypeByFileName(filename);
+        editor = instance.createEditor(document, project, fileType, true);
+
         //TODO: Look for cool properties to enable
-        editor = instance.createEditor(document);
         EditorSettings settings = editor.getSettings();
         settings.setLineMarkerAreaShown(true);
         settings.setLineNumbersShown(true);
@@ -91,6 +99,8 @@ class UseGistsSimpleToolWindowPanel extends SimpleToolWindowPanel {
         settings.setAnimatedScrolling(true);
         settings.setWheelFontChangeEnabled(true);
         settings.setVariableInplaceRenameEnabled(true);
+
+        splitPane.setSecondComponent(editor.getComponent());
     }
 
     private void createTree() {
@@ -102,12 +112,7 @@ class UseGistsSimpleToolWindowPanel extends SimpleToolWindowPanel {
             SimpleTree simpleTree = (SimpleTree) e.getSource();
             if (simpleTree.getLastSelectedPathComponent() instanceof GistFileTreeNode) {
                 GistFileTreeNode gistFile = (GistFileTreeNode) simpleTree.getLastSelectedPathComponent();
-
-                //TODO: Is it possible to make editor recognize the content type of source code to display colored (sintax) text?
-//                String type = gistFile.getGistFile().getType();
-//                FileType fileType = FileTypeManager.getInstance().getFileTypeByExtension(type);
-//                editor.setFileType(fileType);
-
+                createEditor(gistFile.getGistFile().getFilename());
                 String fileContent = useGists.getFileContent(gistFile.getId(), gistFile.getGistFile().getFilename());
                 writeGistFileToEditor(fileContent);
             }
@@ -132,11 +137,9 @@ class UseGistsSimpleToolWindowPanel extends SimpleToolWindowPanel {
     }
 
     private void writeGistFileToEditor(String fileContent) {
-        editor.getDocument().setReadOnly(false);
         ApplicationManager.getApplication().runWriteAction(() -> {
             editor.getDocument().setText(fileContent);
         });
-        editor.getDocument().setReadOnly(true);
     }
 
     private void updateTree() {
