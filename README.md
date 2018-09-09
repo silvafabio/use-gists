@@ -1,4 +1,4 @@
-Use Gists 1.1.0
+Use Gists 1.1.1
 ===============
 
 Use your Github gists right inside your Intellij IDE!
