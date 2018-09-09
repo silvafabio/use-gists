@@ -32,7 +32,9 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.intellij.openapi.editor.EditorSettings;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.fileTypes.FileTypeManager;
+import com.intellij.openapi.options.ShowSettingsUtil;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.JBSplitter;
 import com.intellij.ui.TreeSpeedSearch;
@@ -62,7 +64,7 @@ class UseGistsSimpleToolWindowPanel extends SimpleToolWindowPanel {
     private Project project;
     private JBSplitter splitPane;
 
-    public UseGistsSimpleToolWindowPanel(Project project) {
+    UseGistsSimpleToolWindowPanel(Project project) {
         super(false, true);
 
         this.project = project;
@@ -137,9 +139,7 @@ class UseGistsSimpleToolWindowPanel extends SimpleToolWindowPanel {
     }
 
     private void writeGistFileToEditor(String fileContent) {
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            editor.getDocument().setText(fileContent);
-        });
+        ApplicationManager.getApplication().runWriteAction(() -> editor.getDocument().setText(fileContent));
     }
 
     private void updateTree() {
@@ -175,23 +175,35 @@ class UseGistsSimpleToolWindowPanel extends SimpleToolWindowPanel {
         public void actionPerformed(AnActionEvent e) {
             GithubAuthenticationManager instance = GithubAuthenticationManager.getInstance();
             //TODO: Use i18n for texts
-            GithubChooseAccountDialog githubChooseAccountDialog = new GithubChooseAccountDialog(
-                    e.getProject(),
-                    null,
-                    instance.getAccounts(),
-                    "Which account would you like to use gists?",
-                    false,
-                    false,
-                    "Select an account",
-                    "Ok");
-            githubChooseAccountDialog.show();
 
-            try {
-                GithubAccount newAccount = githubChooseAccountDialog.getAccount();
-                useGists.setAccount(newAccount);
-                updateTree();
-            } catch (IllegalStateException ise) {
-                //Quando nenhuma conta é selecionada.
+            if (instance.getAccounts().isEmpty()) {
+                Messages.showMessageDialog(
+                        project,
+                        "You don't have any Github account configured, please, configure one on the next screen and try again.",
+                        "Git Account",
+                        Messages.getInformationIcon());
+                ShowSettingsUtil.getInstance().showSettingsDialog(project, "Github");
+            }
+
+            if (!instance.getAccounts().isEmpty()) {
+                GithubChooseAccountDialog githubChooseAccountDialog = new GithubChooseAccountDialog(
+                        e.getProject(),
+                        null,
+                        instance.getAccounts(),
+                        "Which account would you like to use gists?",
+                        false,
+                        false,
+                        "Select an account",
+                        "Ok");
+                githubChooseAccountDialog.show();
+
+                try {
+                    GithubAccount newAccount = githubChooseAccountDialog.getAccount();
+                    useGists.setAccount(newAccount);
+                    updateTree();
+                } catch (IllegalStateException ise) {
+                    //Quando nenhuma conta é selecionada.
+                }
             }
         }
     }

@@ -1,6 +1,10 @@
 Change Log
 ----------
 
+### [v1.1.1](https://github.com/silvafabio/use-gists/tree/v1.1.1) (2018-09-08)
+
+- Fix the issue (#4) where the user don't have any Github account configured and don't know what to do.
+
 ### [v1.1.0](https://github.com/silvafabio/use-gists/tree/v1.1.0) (2018-09-05)
 
 - Syntax highlighting based on file extension.
